@@ -185,8 +185,10 @@ void Board::modify_position(int id, int x, int y) {
             }
         }
 
-        v.push_back({x, y, v[m][2], v[m][3], v[m][4], v[m][5]});
-        v.erase(v.begin()+m);
+        //v.push_back({x, y, v[m][2], v[m][3], v[m][4], v[m][5]});
+        //v.erase(v.begin()+m);
+        v[m][0]=x;
+        v[m][1]=y;
 
         print_board();
         cout<<"print modifyied page"<<endl;
