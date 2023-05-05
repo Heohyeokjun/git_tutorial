@@ -123,8 +123,6 @@ void Board::delete_page(int id) {
     cout<<"deleting(id) output is now in delete_page"<<endl;
         
         rebuilding();
-    
-        building = 0;
 
         for(int i=0; i<(int)v.size();i++){
             if(v[i][4]==id){
@@ -163,7 +161,6 @@ void Board::modify_content(int id, char content) {
         cout<<"print modifyied page"<<endl;
 
         rebuilding();
-        building = 0;
 
 }
 
@@ -194,7 +191,6 @@ void Board::modify_position(int id, int x, int y) {
         cout<<"print modifyied page"<<endl;
 
         rebuilding();
-        building = 0;
     }
 }
 
