@@ -11,6 +11,7 @@ using namespace std;
 //int arr[6] = {0,0,0,0,0,0};
  //= Page(0,0,0,0,0,0);
 
+
 int a;
 int b;
 int abovepageid;
@@ -151,7 +152,8 @@ int main(){//int argc, char *argv[]) {
     return 0;
     */
 
-    ofstream fout;
+    //input1
+    /*ofstream fout;
     fout.open("outputTest.txt");
 
     Board board(15, 64, 100, fout);
@@ -174,12 +176,40 @@ int main(){//int argc, char *argv[]) {
     fout.close();
 
     return 0;
+    */
+
+    //input9
+    ofstream fout;
+    fout.open("outputTest.txt");
+
+    Board board(21, 100, 50, fout);
+    board.insert_page(5, 2, 48, 24, 13263, 'l');
+    board.insert_page(5, 15, 80, 28, 29899, 'n');
+    board.modify_position(13263, 29, 8);
+    board.modify_content(13263, 't');
+    board.insert_page(27, 3, 30, 43, 12999, 'o');
+    board.insert_page(48, 9, 1, 24, 1824, 'w');
+    board.modify_content(13263, 'a');
+    board.modify_content(12999, 'l');
+    board.modify_position(1824, 20, 0);
+    board.insert_page(5, 36, 94, 6, 1688, 'g');
+    board.delete_page(13263);
+    board.modify_content(1824, 'l');
+    board.delete_page(1824);
+    board.delete_page(29899);
+    board.insert_page(47, 7, 2, 38, 9966, 't');
+    board.modify_content(12999, 'b');
+    board.insert_page(42, 29, 27, 9, 5111, 's');
+    board.insert_page(11, 32, 56, 9, 6736, 'h');
+    board.insert_page(15, 10, 42, 20, 22324, 'i');
+    board.insert_page(10, 14, 81, 21, 10387, 's');
+    board.delete_page(10387);
+
+    fout.close();
+
+    return 0;
 
 }
-
-/*int arr[6];
-vector<int[5]> v;
-int m;*/
 
 /*void Page::store(){
     arr[0]=getx();
@@ -196,7 +226,6 @@ void Page::takeid(int key){
         if(v[i][4]==key){
             m = i;
             break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
         }
     }
 }
@@ -205,150 +234,51 @@ void Page::setid(){
     setpage(v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5]);
 }
 
-/*vector<int[6]> w;
-int countw = 0;
-
-vector<int[6]> rebuildingid;
-int callstack = 0;*/
-
-int Board::findabovepage(int key){
-    //abovecallstack++;
-
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for(int i=m+1; i<(int)v.size(); i++){
-        if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
-            if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){
-                //findabovepage(v[i][4]);
-                w.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]});
-                countw++;
-                cout << "above page gyupchim ok" << endl;
-            }
-        }
-    }
-
-    //aboveid.push_back(w[w.size()-countw]);
-    //certified.
-    for(int m=(int)w.size()-countw+1; m<(int)w.size(); m++){        
-        for(int j=(int)w.size()-countw; j<m; j++){
-            if((w[m][0]<=w[j][0] && w[j][0]<w[m][0]+w[m][2]) || (w[m][0]<w[j][0]+w[j][2] && w[j][0]+w[j][2]<=w[m][0]+w[m][2]) || (w[m][0]>w[j][0] && w[m][0]+w[m][2]<w[j][0]+w[j][2])){
-                if((w[m][1]<=w[j][1] && w[j][1]<w[m][1]+w[m][3]) || (w[m][1]<w[j][1]+w[j][3] && w[j][1]+w[j][3]<=w[m][1]+w[m][3]) || (w[m][1]>w[j][1] && w[m][1]+w[m][3]<w[j][1]+w[j][3])){
-                    
-                    //findabovepage(v[i][4]);
-                    //aboveid.push_back(w[j][4]);
-                    //count1++;
-                    w.erase(w.begin()+m);
-                    countw--;
-                }
-            }
-        }
-    }
-
-    //problem1
-    for(int i=0; i<(int)w.size()-countw; i++){
-        for(int j=(int)w.size()-countw; j<(int)w.size(); j++){
-            if(w[j][4] == w[i][4]){
-                w.erase(w.begin()+j);
-                countw--;
-                cout<<"above erase"<<endl;
-            }
-        }
-    }
-
-    for(int i=0; i<countw; i++){
-        for (int j=(int)w.size()-countw; j<(int)w.size()-i-1; j++){
-            if(w[j][4]>w[j+1][4]){
-                //w.swap(j, (j+1));
-                //int imsi[6] = w[j+1];
-                //w[j+1] = w[j];
-                cout << "aboveswap" << endl;
-                for(int k=0; k<6; k++){
-                imsi[k] = w[j+1][k];
-                w[j+1][k] = w[j][k];
-                w[j][k] = imsi[k];
-                }
-            }
-        }
-    }
-    //callstack++;
-    //countw = 0;
-    //int l;
-    if(callstack>1000){return 0;}
-
-    for(int i=(int)w.size()-countw; i<(int)w.size(); i++){
-        countw = 0;
-        //l = w[i][4];
-        cout<<"above recursion"<<endl;
-        findabovepage(w[i][4]);
-    }
-    countw = 0;
-
-
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){ 
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    rebuildingid.push_back({v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5]});
-    building++;
-    //callstack++;
-
-    //cout << callstack << endl;
-    cout << "above is called" << endl;
-
-    return key;
-    /*for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==abovepageid){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }*/
-
-    /*for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*getwidth() + w] = ' ';
-        }
-    }
-    //callstack--;
-    findunderpage(key);*/
-
-
-
-
+int Board::findunderpage(int key){
+    cout<<"under is start"<<endl;
+    countu = 0;
     
-
-    /*for(int i=0; i<v.size();i++){
+    for(int i=0; i<(int)v.size();i++){
         if(v[i][4]==key){
             m = i;
             break;
             //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
         }
-    }*/
+    }
 
-    /*for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = ' ';
+    /*
+    for(int i=0; i<m; i++){
+        if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
+            if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
+                u.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]});
+                countu++;
+                cout<<"under page gyupchim ok"<<endl;
+            }
         }
-    }*/
- 
+    }
+
+    for (int i=(int)u.size()-countu; i<(int)u.size(); i++){
+            for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
+                for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
+                board[h*width + w] = u[i][5];
+                }
+            }
+            cout<<"under building"<<endl;
+        }
+    */
+
+    for (int i=0; i<m; i++){
+            for (int h = v[i][1]; h < v[i][1]+v[i][3]; h++) {
+                for (int w = v[i][0]; w < v[i][0]+v[i][2]; w++) {
+                board[h*width + w] = v[i][5];
+                }
+            }
+            cout<<"under building"<<endl;
+        }
+    
+    cout<<"under is end"<<endl;
+    return key;
 }
-
-/*vector<int[6]> u;
-int countu = 0;
-
-vector<int> counting;
-//int count2 = 0;*/
-
 
 int Board::findunderpage2(int key){
     /*
@@ -559,157 +489,36 @@ int Board::findunderpage2(int key){
             cout<<"under building"<<endl;
         }
 
-        /*
-        for (int i=(int)u.size()-countu; i<(int)u.size(); i++){
-            for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
-                for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
-                //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
-                //board[h*width + w] = page.getcontent(); //버그가능성
-                board[h*width + w] = u[i][5];
-                }
-            }
-            cout<<"under building"<<endl;
-        }
-        */
-
     }
 
     countub = 0;    
 
-    //return key;
-
-    //underpage building
-    /*for (int i=u.size()-countu; i<u.size(); i++){
-        for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
-            for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
-                board[h*width + w] = 'u[i][5]';
-            }
-        }
-    }*/
-
-    //currentpage buliding
-    /*for (int h = v[m][1]; h < v[m][1]+u[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = 'v[m][5]';
-        }
-    }*/
-    cout << "under is called" << endl;
+    cout << "under reursion is end" << endl;
 
     return key;
     
 
 }
 
-int Board::findunderpage(int key){
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for(int i=0; i<m; i++){
-        if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
-            if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
-                u.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]});
-                countu++;
-                cout<<"under page gyupchim ok"<<endl;
-            }
-        }
-    }
-
-    for (int i=(int)u.size()-countu; i<(int)u.size(); i++){
-            for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
-                for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
-                //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
-                //board[h*width + w] = page.getcontent(); //버그가능성
-                board[h*width + w] = u[i][5];
-                }
-            }
-            cout<<"under building"<<endl;
-        }
-    
-    cout<<"under is called"<<endl;
-}
-
 int Board::deleting(int id){
-    //do{
-    abovepageid = findabovepage(id);
-
-    //delete code
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==abovepageid){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = ' ';
-        }
-    }
-    //callstack--;
-    //findunderpage(abovepageid);
-    //print_board();
-    //}while(callstack>0);
     
-    /*under=findunderpage(abovepageid);
-    if(under==abovepageid){
-        print_board();
-        cout << "print above deleted id"<<endl;
-    }
-
-    if(id==abovepageid){
-        w.clear();
-        return id;        
-    }
-    else{return -1;}*/
-
-    findunderpage(abovepageid);
-    print_board();
-    cout << "print above deleted id"<<endl;
-
-    if(id==abovepageid){
-        w.clear();
-        //cout << "print above deleted id"<<endl;
-        return id;        
-    }
-    else{return -1;}
+    findabovepage(id); 
+    w.clear();
+    //cout << "print above deleted id"<<endl;
+    return id;        
+    
     
 }
-
-/*void sortingandrecursion(){
-    for(int i=aboveid.size()-count1; i<aboveid.size(); i++){
-        for (int j=aboveid.size()-count1; j<aboveid.size()-i-1; j++){
-            if(aboveid[j]>aboveid[j+1]){
-                int imsi = aboveid[j+1];
-                aboveid[j+1] = aboveid[j];
-                aboveid[j] = imsi;
-            }
-        }
-    }
-
-    for(int i=aboveid.size()-count1; i<aboveid.size(); i++){
-        findabovepage(aboveid[i]);
-    }
-
-    count1 = 0;
-}*/
 
 void Board::rebuilding(){
     for(int i=(int)rebuildingid.size()-2; i>=(int)rebuildingid.size()-building; i--){   
         for (int h = rebuildingid[i][1]; h < rebuildingid[i][1]+rebuildingid[i][3]; h++) {
             for (int w = rebuildingid[i][0]; w < rebuildingid[i][0]+rebuildingid[i][2]; w++) {
-                //page.setpage(rebuildingid[i][0],rebuildingid[i][1],rebuildingid[i][2],rebuildingid[i][3],rebuildingid[i][4],rebuildingid[i][5]);
-                //board[h*width + w] = page.getcontent();
                 board[h*width + w] = rebuildingid[i][5];
             }
         }
         print_board();
-        cout<< "rebuilding is called" << endl;
+        cout<< "print rebuilding page" << endl;
     }
     
     //벡터초기화 필요 // ok
