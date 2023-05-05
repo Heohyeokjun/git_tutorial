@@ -26,6 +26,7 @@ class Board {
         static void understaticplus(){undercallstack++;}
         int findabovepage(int id);
         int findunderpage(int id);
+        int findunderpage2(int id);
         int deleting(int id);
         void rebuilding();
 
@@ -136,7 +137,9 @@ void Board::delete_page(int id) {
             board[h*width + w] = ' ';
         }
     }*/
-    if(id==deleting(id)){
+    a = deleting(id);
+    cout<<"deleting(id) output is now in delete_page"<<endl;
+    if(id==a){
         rebuilding();
     
         building = 0;
@@ -155,11 +158,9 @@ void Board::delete_page(int id) {
 }
 
 void Board::modify_content(int id, char content) {
-    if(id==deleting(id)){
-        rebuilding();
-    
-        building = 0;
-
+    b = deleting(id);
+    cout<<"deleting(id) output is now in modify_content"<<endl;
+    if(id==b){
         for(int i=0; i<(int)v.size();i++){
             if(v[i][4]==id){
                 m = i;
@@ -168,7 +169,18 @@ void Board::modify_content(int id, char content) {
             }
         }
 
-        v.erase(v.begin()+m);
+        for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
+            for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
+                board[h*width + w] = content;
+            }
+        }
+
+        v[m][5] = content;
+
+        print_board();
+
+        rebuilding();
+        building = 0;
     }
     
     /*
@@ -197,6 +209,31 @@ void Board::modify_content(int id, char content) {
 }
 
 void Board::modify_position(int id, int x, int y) {
+    if(id==deleting(id)){
+        for(int i=0; i<(int)v.size();i++){
+            if(v[i][4]==id){
+                m = i;
+                break;
+            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
+            }
+        }
+
+        v[m][0]=x;
+        v[m][1]=y;
+
+        for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
+            for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
+                board[h*width + w] = v[m][5];
+            }
+        }
+
+        print_board();
+
+        rebuilding();
+        building = 0;
+    }
+    
+    /*
     deleting(id);
     
     for(int i=0; i<(int)v.size();i++){
@@ -218,6 +255,7 @@ void Board::modify_position(int id, int x, int y) {
 
     rebuilding();
     building = 0;
+    */
 }
 
 
