@@ -5,10 +5,15 @@
 
 using namespace std;
 
+//int argc=3;
+
 //int imsi[6] = {0,0,0,0,0,0};
 //int arr[6] = {0,0,0,0,0,0};
+ //= Page(0,0,0,0,0,0);
+
 int imsi[6];
-int arr[6];
+int l;
+//int arr[6];
 //vector<int> v[6];
 vector<vector<int>> v; 
 int m;
@@ -109,12 +114,26 @@ void manage_board(string input_file, string output_file) {
 }
 
 
-int main(int argc, char *argv[]) {
+int main(){//int argc, char *argv[]) {
 
     //Page page;
+    /*
     if (argc==3) manage_board(string(argv[1]), string(argv[2]));
     else cerr << "Wrong arguments" << endl;
+    */
+    ofstream fout;
+    fout.open("outputTest.txt");
+
+    Board board(7, 50, 20, fout);
+    board.insert_page(0, 1, 10, 15, 8, 'c');
+    board.insert_page(5, 2, 5, 18, 1, 'k');
+    board.insert_page(2, 7, 3, 2, 2, 'x');
+    board.insert_page(6, 3, 10, 10, 32, 'l');
+    board.modify_content(32, 'M');
+    board.modify_position(2, 1, 2);
+    board.delete_page(8);
     
+    fout.close();
 
     return 0; 
 
@@ -124,15 +143,15 @@ int main(int argc, char *argv[]) {
 vector<int[5]> v;
 int m;*/
 
-void Page::store(){
-    arr[0]=x;
-    arr[1]=y;
-    arr[2]=width;
-    arr[3]=height;
-    arr[4]=id;
-    arr[5]=content;
+/*void Page::store(){
+    arr[0]=getx();
+    arr[1]=gety();
+    arr[2]=getwidth();
+    arr[3]=getheight();
+    arr[4]=getid();
+    arr[5]=getcontent();
     v.push_back({arr[0],arr[1],arr[2],arr[3],arr[4],arr[5]});
-}
+}*/
 
 void Page::takeid(int key){
     for(int i=0; i<(int)v.size(); i++){
@@ -154,7 +173,9 @@ int countw = 0;
 vector<int[6]> rebuildingid;
 int callstack = 0;*/
 
-int findabovepage(int key){
+int Board::findabovepage(int key){
+    abovecallstack++;
+
     for(int i=0; i<(int)v.size();i++){
         if(v[i][4]==key){
             m = i;
@@ -214,20 +235,21 @@ int findabovepage(int key){
             }
         }
     }
-
+    //callstack++;
     //countw = 0;
-    //int l = 0;
+    //int l;
+    if(callstack>1000){return 0;}
 
     for(int i=(int)w.size()-countw; i<(int)w.size(); i++){
         countw = 0;
-        //l = w[i];
+        //l = w[i][4];
         findabovepage(w[i][4]);
     }
     countw = 0;
 
 
     for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){
+        if(v[i][4]==key){ 
             m = i;
             break;
             //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
@@ -236,9 +258,30 @@ int findabovepage(int key){
 
     rebuildingid.push_back({v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5]});
     building++;
-    callstack++;
+    //callstack++;
+
+    //cout << callstack << endl;
+    cout << 'a' << endl;
 
     return key;
+    /*for(int i=0; i<(int)v.size();i++){
+        if(v[i][4]==abovepageid){
+            m = i;
+            break;
+            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
+        }
+    }*/
+
+    /*for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
+        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
+            board[h*getwidth() + w] = ' ';
+        }
+    }
+    //callstack--;
+    findunderpage(key);*/
+
+
+
 
     
 
@@ -264,7 +307,7 @@ int countu = 0;
 vector<int> counting;
 //int count2 = 0;*/
 
-void Board::findunderpage(int key){
+int Board::findunderpage(int key){
     for(int i=0; i<(int)v.size();i++){
         if(v[i][4]==key){
             m = i;
@@ -308,9 +351,10 @@ void Board::findunderpage(int key){
 
     //counting.push_back(countu);
 
-    int l=0;
+    l = 0;
 
-    for(int i=(int)u.size()-countu; i<(int)u.size(); i++){
+    for(int i=(int)u.size()-countu; i<(int)u.size()/*+1*/; i++){
+        if(i<(int)u.size()){
         /*if(l==0){
             counting.push_back(0);
         }*/       
@@ -320,6 +364,10 @@ void Board::findunderpage(int key){
         }*/    
         findunderpage(u[i][4]);
         l = 1;
+        }
+        else{
+
+        }
         //count++; //problem3
         //counting[]++;
     }
@@ -348,6 +396,8 @@ void Board::findunderpage(int key){
 
         count = 0;
     }*/
+    
+    
     if(l==1){
         for(int i=0; i<(int)v.size();i++){
             if(v[i][4]==key){
@@ -421,14 +471,15 @@ void Board::findunderpage(int key){
             board[h*width + w] = 'v[m][5]';
         }
     }*/
+    cout << 'u' << endl;
 
-
+    return key;
     
 
 }
 
-void Board::deleting(int id){
-    do{
+int Board::deleting(int id){
+    //do{
     int abovepageid = findabovepage(id);
 
     //delete code
@@ -445,11 +496,22 @@ void Board::deleting(int id){
             board[h*width + w] = ' ';
         }
     }
+    //callstack--;
+    //findunderpage(abovepageid);
+    //print_board();
+    //}while(callstack>0);
+    if(findunderpage(abovepageid)==abovepageid){
+        print_board();
+        cout << 'p'<<1<<endl;
+    }
 
-    findunderpage(abovepageid);
-    print_board();
-    callstack--;
-    }while(callstack>0);
+    if(id==abovepageid){
+        return id;
+    }
+    else{return -1;}
+
+    
+    
 }
 
 /*void sortingandrecursion(){
@@ -478,8 +540,9 @@ void Board::rebuilding(){
                 //board[h*width + w] = page.getcontent();
                 board[h*width + w] = rebuildingid[i][5];
             }
-            print_board();
         }
+        print_board();
+        cout << 'p'<<2<<endl;
     }
     
     //벡터초기화 필요 // ok
