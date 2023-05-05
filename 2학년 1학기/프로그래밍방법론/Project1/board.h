@@ -101,11 +101,9 @@ void Board::print_job(int job_idx, char job_type, int id) {
 }
 
 void Board::insert_page(int x, int y, int width, int height, int id, int content) {    
-    //Page page;
+    
     page.setpage(x,y,width,height,id,content); 
     v.push_back({page.getx(),page.gety(),page.getwidth(),page.getheight(),page.getid(),page.getcontent()});
-    //cout<<page.getx();
-    //cout<<page.getstatic();
     
     for (int h = page.gety(); h < page.gety()+page.getheight(); h++) {
         for (int w = page.getx(); w < page.getx()+page.getwidth(); w++) {
@@ -120,26 +118,10 @@ void Board::insert_page(int x, int y, int width, int height, int id, int content
 int building = 0;
 
 void Board::delete_page(int id) {
-    //deleting(id);
-    //building
-
-    //지금 작성중인 findunderpage에 대해서 필요없는 코드
-    /*for(int i=0; i<v.size();i++){
-        if(v[i][4]==id){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = ' ';
-        }
-    }*/
-    a = deleting(id);
+    cout<<"-----delete_page-----"<<endl;
+    deleting(id);
     cout<<"deleting(id) output is now in delete_page"<<endl;
-    if(id==a){
+        
         rebuilding();
     
         building = 0;
@@ -153,14 +135,14 @@ void Board::delete_page(int id) {
         }
 
         v.erase(v.begin()+m);
-    }
+    
     
 }
 
 void Board::modify_content(int id, char content) {
-    b = deleting(id);
+    cout<<"-----modify_content-----"<<endl;
+    deleting(id);
     cout<<"deleting(id) output is now in modify_content"<<endl;
-    if(id==b){
         for(int i=0; i<(int)v.size();i++){
             if(v[i][4]==id){
                 m = i;
@@ -178,38 +160,17 @@ void Board::modify_content(int id, char content) {
         v[m][5] = content;
 
         print_board();
+        cout<<"print modifyied page"<<endl;
 
         rebuilding();
         building = 0;
-    }
-    
-    /*
-    deleting(id);
-
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==id){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = content;
-        }
-    }
-
-    v[m][5]=content;
-
-    rebuilding();
-    building = 0;
-    */
 
 }
 
 void Board::modify_position(int id, int x, int y) {
+    cout<<"-----modify_position-----"<<endl;
     if(id==deleting(id)){
+        cout<<"deleting(id) output is now in modify_position"<<endl;
         for(int i=0; i<(int)v.size();i++){
             if(v[i][4]==id){
                 m = i;
@@ -218,44 +179,21 @@ void Board::modify_position(int id, int x, int y) {
             }
         }
 
-        v[m][0]=x;
-        v[m][1]=y;
-
-        for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-            for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
+        for (int h = y; h < y+v[m][3]; h++) {
+            for (int w = x; w < x+v[m][2]; w++) {
                 board[h*width + w] = v[m][5];
             }
         }
 
+        v.push_back({x, y, v[m][2], v[m][3], v[m][4], v[m][5]});
+        v.erase(v.begin()+m);
+
         print_board();
+        cout<<"print modifyied page"<<endl;
 
         rebuilding();
         building = 0;
     }
-    
-    /*
-    deleting(id);
-    
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==id){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
-
-    for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
-        for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            board[h*width + w] = v[m][5];
-        }
-    }
-
-    v[m][0]=x;
-    v[m][1]=y;
-
-    rebuilding();
-    building = 0;
-    */
 }
 
 
