@@ -19,10 +19,14 @@ class Board {
         void delete_page(int id);
         void modify_content(int id, char content);
         void modify_position(int id, int x, int y);
-        //static int getstatic(){return count;};
-        //static void onemore(){count++;};
-        void findunderpage(int id);
-        void deleting(int id);
+        int getwidth(){return width;}        
+        static int getabovestatic(){return abovecallstack;}
+        static int getunderstatic(){return undercallstack;}
+        static void abovestaticplus(){abovecallstack++;}
+        static void understaticplus(){undercallstack++;}
+        int findabovepage(int id);
+        int findunderpage(int id);
+        int deleting(int id);
         void rebuilding();
 
     private:
@@ -31,9 +35,12 @@ class Board {
         char* board;
         //static int count;
         Page page;
+        static int abovecallstack;
+        static int undercallstack;
 };
 
-//int Board::count = 0;
+int Board::abovecallstack = 0;
+int Board::undercallstack = 0;
 
 
 Board::Board(int num_jobs, int width, int height, ofstream& output_stream): output(output_stream) {
@@ -93,13 +100,15 @@ void Board::print_job(int job_idx, char job_type, int id) {
 }
 
 void Board::insert_page(int x, int y, int width, int height, int id, int content) {    
-    
+    //Page page;
     page.setpage(x,y,width,height,id,content); 
-    page.store();
+    v.push_back({page.getx(),page.gety(),page.getwidth(),page.getheight(),page.getid(),page.getcontent()});
+    //cout<<page.getx();
+    //cout<<page.getstatic();
     
-    for (int h = page.gety(); h < page.gety()+height; h++) {
-        for (int w = page.getx(); w < page.getx()+width; w++) {
-            board[h*width + w] = page.getcontent();
+    for (int h = page.gety(); h < page.gety()+page.getheight(); h++) {
+        for (int w = page.getx(); w < page.getx()+page.getwidth(); w++) {
+            board[h*getwidth() + w] = page.getcontent();
         }
     }
 
@@ -110,7 +119,7 @@ void Board::insert_page(int x, int y, int width, int height, int id, int content
 int building = 0;
 
 void Board::delete_page(int id) {
-    deleting(id);
+    //deleting(id);
     //building
 
     //지금 작성중인 findunderpage에 대해서 필요없는 코드
@@ -127,23 +136,42 @@ void Board::delete_page(int id) {
             board[h*width + w] = ' ';
         }
     }*/
+    if(id==deleting(id)){
+        rebuilding();
+    
+        building = 0;
 
-    rebuilding();
-    building = 0;
-
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==id){
-            m = i;
-            break;
+        for(int i=0; i<(int)v.size();i++){
+            if(v[i][4]==id){
+                m = i;
+                break;
             //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
+            }
         }
-    }
 
-    v.erase(v.begin()+m);
+        v.erase(v.begin()+m);
+    }
     
 }
 
 void Board::modify_content(int id, char content) {
+    if(id==deleting(id)){
+        rebuilding();
+    
+        building = 0;
+
+        for(int i=0; i<(int)v.size();i++){
+            if(v[i][4]==id){
+                m = i;
+                break;
+            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
+            }
+        }
+
+        v.erase(v.begin()+m);
+    }
+    
+    /*
     deleting(id);
 
     for(int i=0; i<(int)v.size();i++){
@@ -164,6 +192,7 @@ void Board::modify_content(int id, char content) {
 
     rebuilding();
     building = 0;
+    */
 
 }
 
