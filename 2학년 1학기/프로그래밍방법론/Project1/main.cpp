@@ -318,8 +318,8 @@ int Board::findabovepage(int key){
             //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
             //board[h*width + w] = page.getcontent(); //버그가능성
             board[h*width + w] = ' ';
-            }
         }
+    }
     
     rebuildingid.push_back({v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5]});
     building++;
@@ -334,26 +334,130 @@ int Board::findunderpage(int key){
     cout<<"under is start"<<endl;
     countu = 0;
     
-    for(int i=0; i<(int)v.size();i++){
+    for(int i=0; i<(int)v.size(); i++){
         if(v[i][4]==key){
             m = i;
             break;
             //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
         }
     }
-
-    /*
-    for(int i=m-1; i>=0; i--){
+    
+    for(int i=0; i<m; i++){
         if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
             if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
-                u.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]});
+                u.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5],i});
                 countu++;
-                cout<<"under page gyupchim ok"<<endl;
+                cout<<"under page gyupchim ok 1"<<endl;
             }
         }
     }
-    */
-        
+    //cout<<"?"<<endl;
+
+    int p;
+    //cout<<"u.size() = "<<k<<endl;
+    int usize=(int)u.size();
+    for(int i=0; i<usize; i++){
+        //cout<<"in"<<endl
+        for(int k=0; k<(int)v.size(); k++){
+            if(v[k][6]==u[i][6]){
+                p = k;
+                break;
+                //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
+            }
+        }
+        for(int j=p; j<(int)v.size(); j++){
+            if(j!=m){
+                if((u[i][0]<=v[j][0] && v[j][0]<u[i][0]+u[i][2]) || (u[i][0]<v[j][0]+v[j][2] && v[j][0]+v[j][2]<=u[i][0]+u[i][2]) || (u[i][0]>v[j][0] && v[j][0]+v[j][2]<u[i][0]+u[i][2])){
+                    if((u[i][1]<=v[j][1] && v[j][1]<u[i][1]+u[i][3]) || (u[i][1]<v[j][1]+v[j][3] && v[j][1]+v[j][3]<=u[i][1]+u[i][3]) || (u[i][1]>v[j][1] && v[j][1]+v[j][3]<u[i][1]+u[i][3])){
+                        u.push_back({v[j][0],v[j][1],v[j][2],v[j][3],v[j][4],v[j][5],j}); 
+                        countu++;
+                        cout<<"all above ok 2"<<endl;
+                    }
+                }
+            }
+            //cout<<"lol"<<endl;
+        }
+        //cout<<"lal"<<endl;
+    }
+    //cout<<"??"<<endl;
+    //problem: key의 above까지도 u벡터에 저장되버림. 
+    //따라서 key의 above를 예외처리해야함.
+    //의문:key above는 (모든 under의 above의 합집합)의 교집합인가? -> 아니다.
+
+    //countub = 0;
+    //같은 원소 빼주기
+    for(int i=0; i<(int)u.size()-1; i++){
+        for(int j=i+1; j<(int)u.size(); j++){
+            if(u[i][6]==u[j][6]){
+                do{
+                u.erase(u.begin()+j);
+                //countub++
+                }while(u[i][6]==u[j][6]);
+            }     
+        }
+        cout<<"same elements ok 3"<<endl;
+    }
+
+    countub = 0;
+    for(int i=m+1; i<(int)v.size(); i++){
+        if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
+            if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
+                ub.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5],i});
+                countub++;
+            }
+        }
+        cout<<"In findunder, above page gyupchim ok 4"<<endl;
+    }
+
+    for(int i=0; i<(int)ub.size(); i++){
+        for(int j=0; j<(int)u.size(); j++){
+            if(ub[i][6]==u[j][6]){
+                u.erase(u.begin()+j);
+            }
+        }
+        cout<<"find key above=all above and erase ok 5"<<endl;
+    }
+
+    //sorting하기
+    for(int i=0; i<(int)u.size(); i++){
+        for (int j=0; j<(int)u.size()-i-1; j++){
+            if(u[j][6]>u[j+1][6]){
+                //w.swap(j, (j+1));
+                //int imsi[6] = w[j+1];
+                //w[j+1] = w[j];
+                //cout<<"underswap"<<endl;
+                for(int k=0; k<7; k++){
+                imsi[k] = u[j+1][k];
+                u[j+1][k] = u[j][k];
+                u[j][k] = imsi[k];
+                }
+            }
+        cout<< "In findunder, sorting ok 6" << endl;   
+        }
+    }
+    //cout<<"???"<<endl;
+    //출력하기
+    for (int i=0; i<(int)u.size(); i++){
+        for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
+            for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
+                //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
+                //board[h*width + w] = page.getcontent(); //버그가능성
+                board[h*width + w] = u[i][5];
+            }
+        }
+            cout<<"under building 7"<<endl;
+    }
+
+    u.clear();
+    ub.clear();
+
+
+
+
+
+
+
+        /*
         for (int i=0; i<m; i++){
             for (int h = v[i][1]; h < v[i][1]+v[i][3]; h++) {
                 for (int w = v[i][0]; w < v[i][0]+v[i][2]; w++) {
@@ -362,7 +466,7 @@ int Board::findunderpage(int key){
             }
             cout<<"under building"<<endl;
         }
-        
+        */
 
        /*
        for (int i=(int)u.size()-1; i>=(int)u.size()-countu; i--){
@@ -403,6 +507,7 @@ void Board::rebuilding(){
         print_board();
         cout<< "print rebuilding page" << endl;
     }
-    
+    rebuildingid.clear();
+    building = 0;
     //벡터초기화 필요 // ok
 }
