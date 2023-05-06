@@ -5,31 +5,18 @@
 
 using namespace std;
 
-//int argc=3;
-
-//int imsi[6] = {0,0,0,0,0,0};
-//int arr[6] = {0,0,0,0,0,0};
- //= Page(0,0,0,0,0,0);
-
-
-int a;
-int b;
-//int c;
-int abovepageid;
-int under;
-
 int imsi[6];
 int l;
-//int arr[6];
-//vector<int> v[6];
+
 vector<vector<int>> v; 
 int m;
+
+vector<vector<int>> none;
 
 vector<vector<int>> w;
 int countw = 0;
 
 vector<vector<int>> rebuildingid;
-int callstack = 0;
  
 vector<vector<int>> u;
 int countu = 0;
@@ -39,10 +26,6 @@ int countub = 0;
 
 vector<vector<int>> ubb;
 
-vector<int> counting;
-//int count2 = 0;
-
-//int deleting(int id)
 
 #include "board.h"
 
@@ -72,7 +55,6 @@ void manage_board(string input_file, string output_file) {
 
 
     Board board = Board(num_jobs, width, height, output);
-    //Page page = Page(0,0,0,0,0,0);
 
 
     int page_x, page_y, page_width, page_height, page_id;
@@ -130,17 +112,15 @@ void manage_board(string input_file, string output_file) {
 
 int main(){//int argc, char *argv[]) {
 
-    //Page page;
     /*
     if (argc==3) manage_board(string(argv[1]), string(argv[2]));
     else cerr << "Wrong arguments" << endl;
     */
 
-    //input0
-    /*
     ofstream fout;
     fout.open("outputTest.txt");
-
+    //input0
+    /*
     Board board(7, 50, 20, fout);
     board.insert_page(0, 1, 10, 15, 8, 'c');
     board.insert_page(5, 2, 5, 18, 1, 'k');
@@ -149,16 +129,10 @@ int main(){//int argc, char *argv[]) {
     board.modify_content(32, 'M');
     board.modify_position(2, 1, 2);
     board.delete_page(8);
-    
-    fout.close();
-
-    return 0;
     */
 
     //input1
-    /*ofstream fout;
-    fout.open("outputTest.txt");
-
+    /*
     Board board(15, 64, 100, fout);
     board.insert_page(11, 57, 32, 11, 18731, 's');
     board.modify_position(18731, 0, 25);
@@ -175,16 +149,10 @@ int main(){//int argc, char *argv[]) {
     board.insert_page(25, 1, 21, 84, 14092, 'v');
     board.modify_position(8277, 21, 23);
     board.delete_page(14092);
-    
-    fout.close();
-
-    return 0;
     */
 
     //input9
-    ofstream fout;
-    fout.open("outputTest.txt");
-
+    /*
     Board board(21, 100, 50, fout);
     board.insert_page(5, 2, 48, 24, 13263, 'l');
     board.insert_page(5, 15, 80, 28, 29899, 'n');
@@ -207,24 +175,41 @@ int main(){//int argc, char *argv[]) {
     board.insert_page(15, 10, 42, 20, 22324, 'i');
     board.insert_page(10, 14, 81, 21, 10387, 's');
     board.delete_page(10387);
+    */
+
+    //input6
+    
+    Board board(21, 100, 120, fout);
+    board.insert_page(12, 33, 68, 61, 29258, 'c');
+    board.insert_page(8, 114, 71, 0, 18978, 'q');
+    board.insert_page(24, 31, 45, 29, 20034, 'o');
+    board.insert_page(85, 19, 8, 100, 13581, 'u');
+    board.insert_page(0, 7, 97, 11, 18387, 'i');
+    board.insert_page(1, 23, 94, 6, 22582, 'r');
+    board.insert_page(39, 40, 35, 61, 5166, 'i');
+    board.insert_page(85, 39, 12, 64, 5083, 'q');
+    board.insert_page(16, 65, 52, 55, 2748, 'a');
+    board.modify_content(2748, 'u');
+    board.insert_page(0, 17, 58, 67, 17171, 'w');
+    board.modify_position(22582, 6, 113);
+    board.insert_page(1, 48, 72, 31, 28267, 't');
+    board.insert_page(4, 10, 33, 0, 18096, 'o');
+    board.modify_position(22582, 3, 17);
+    board.insert_page(43, 20, 12, 14, 31634, 'g');
+    board.insert_page(17, 12, 35, 32, 28674, 'n');
+    board.delete_page(13581);
+    board.insert_page(20, 1, 40, 115, 268, 'l');  
+    board.delete_page(28674);
+    board.modify_position(18978, 14, 61);
+    
 
     fout.close();
 
     return 0;
-
+    
 }
 
-/*void Page::store(){
-    arr[0]=getx();
-    arr[1]=gety();
-    arr[2]=getwidth();
-    arr[3]=getheight();
-    arr[4]=getid();
-    arr[5]=getcontent();
-    v.push_back({arr[0],arr[1],arr[2],arr[3],arr[4],arr[5]});
-}*/
-
-void Page::takeid(int key){
+void Board::takeid(int key){
     for(int i=0; i<(int)v.size(); i++){
         if(v[i][4]==key){
             m = i;
@@ -237,14 +222,20 @@ void Page::setid(){
     setpage(v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5]);
 }
 
-int Board::findabovepage(int key){
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
+/*
+bool gyupchim(int m){
+    if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
+        if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
+                return true;
+            }
     }
+
+    else{return false;}
+}*/
+
+int Board::findabovepage(int key){
+    
+    takeid(key);
 
     for(int i=m+1; i<(int)v.size(); i++){
         if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
@@ -288,10 +279,6 @@ int Board::findabovepage(int key){
     for(int i=0; i<countw; i++){
         for (int j=(int)w.size()-countw; j<(int)w.size()-i-1; j++){
             if(w[j][4]>w[j+1][4]){
-                //w.swap(j, (j+1));
-                //int imsi[6] = w[j+1];
-                //w[j+1] = w[j];
-                //cout<<"underswap"<<endl;
                 for(int k=0; k<6; k++){
                 imsi[k] = w[j+1][k];
                 w[j+1][k] = w[j][k];
@@ -317,18 +304,10 @@ int Board::findabovepage(int key){
         }
     }  
 
-    for(int i=0; i<(int)v.size();i++){
-        if(v[i][4]==key){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
+    takeid(key);
 
     for (int h = v[m][1]; h < v[m][1]+v[m][3]; h++) {
         for (int w = v[m][0]; w < v[m][0]+v[m][2]; w++) {
-            //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
-            //board[h*width + w] = page.getcontent(); //버그가능성
             board[h*width + w] = ' ';
         }
     }
@@ -346,14 +325,7 @@ int Board::findunderpage(int key){
     cout<<"under is start"<<endl;
     countu = 0;
 
-    
-    for(int i=0; i<(int)v.size(); i++){
-        if(v[i][4]==key){
-            m = i;
-            break;
-            //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-        }
-    }
+    takeid(key);
 
     ubb.push_back({v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5],m});
 
@@ -368,19 +340,14 @@ int Board::findunderpage(int key){
             }
         }
     }
-    //cout<<"?"<<endl;
-
     
     for(int j=0; j<(int)u.size(); j++){
         cout<<"In u ";
         cout<<u[j][5]<<endl;
     }
-    
 
-    //cout<<"u.size() = "<<k<<endl;
     int usize=(int)u.size();
     for(int i=0; i<usize; i++){
-        //cout<<"in"<<endl; 
         for(int j=u[i][6]+1; j<(int)v.size(); j++){
             //cout<<j<<endl;
             //cout<<m<<endl;
@@ -393,9 +360,7 @@ int Board::findunderpage(int key){
                     }
                 }
             }
-            //cout<<"lol"<<endl;
         }
-        //cout<<"lal"<<endl;
     }
     //cout<<"??"<<endl;
     //problem: key의 above까지도 u벡터에 저장되버림. 
@@ -463,10 +428,6 @@ int Board::findunderpage(int key){
     for(int i=0; i<(int)u.size(); i++){
         for (int j=0; j<(int)u.size()-i-1; j++){
             if(u[j][6]>u[j+1][6]){
-                //w.swap(j, (j+1));
-                //int imsi[6] = w[j+1];
-                //w[j+1] = w[j];
-                //cout<<"underswap"<<endl;
                 for(int k=0; k<7; k++){
                 imsi[k] = u[j+1][k];
                 u[j+1][k] = u[j][k];
@@ -476,13 +437,11 @@ int Board::findunderpage(int key){
         cout<< "In findunder, sorting ok 6" << endl;   
         }
     }
-    //cout<<"???"<<endl;
+
     //출력하기
     for (int i=0; i<(int)u.size(); i++){
         for (int h = u[i][1]; h < u[i][1]+u[i][3]; h++) {
             for (int w = u[i][0]; w < u[i][0]+u[i][2]; w++) {
-                //page.setpage(u[i][0],u[i][1],u[i][2],u[i][3],u[i][4],u[i][5]);
-                //board[h*width + w] = page.getcontent(); //버그가능성
                 board[h*width + w] = u[i][5];
             }
         }
@@ -491,7 +450,6 @@ int Board::findunderpage(int key){
 
     u.clear();
     ub.clear();
-
 
         /*
         for (int i=0; i<m; i++){
@@ -517,8 +475,6 @@ int Board::findunderpage(int key){
         }
         */
 
-    
-    
     cout<<"under is end"<<endl;
     return key;
 }
@@ -544,6 +500,7 @@ void Board::rebuilding(){
         print_board();
         cout<< "print rebuilding page" << endl;
     }
+
     rebuildingid.clear();
     building = 0;
     //벡터초기화 필요 // ok
