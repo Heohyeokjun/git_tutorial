@@ -14,6 +14,7 @@ using namespace std;
 
 int a;
 int b;
+//int c;
 int abovepageid;
 int under;
 
@@ -35,6 +36,8 @@ int countu = 0;
 
 vector<vector<int>> ub;
 int countub = 0;
+
+vector<vector<int>> ubb;
 
 vector<int> counting;
 //int count2 = 0;
@@ -248,7 +251,7 @@ int Board::findabovepage(int key){
             if((v[m][1]<=v[i][1] && v[i][1]<v[m][1]+v[m][3]) || (v[m][1]<v[i][1]+v[i][3] && v[i][1]+v[i][3]<=v[m][1]+v[m][3]) || (v[m][1]>v[i][1] && v[m][1]+v[m][3]<v[i][1]+v[i][3])){                
                 w.push_back({v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]});
                 countw++;
-                //cout<<"under page gyupchim ok"<<endl;
+                cout<<"above page gyupchim ok"<<endl;
             }
         }
     }
@@ -270,6 +273,7 @@ int Board::findabovepage(int key){
     }
     */
 
+/*
     for(int i=0; i<(int)w.size()-countw; i++){
         for(int j=(int)w.size()-countw; j<(int)w.size(); j++){
             if(w[j][4] == w[i][4]){
@@ -279,6 +283,7 @@ int Board::findabovepage(int key){
             }
         }
     }
+    */
 
     for(int i=0; i<countw; i++){
         for (int j=(int)w.size()-countw; j<(int)w.size()-i-1; j++){
@@ -296,7 +301,8 @@ int Board::findabovepage(int key){
         }
     }
 
-    for(int i=(int)w.size()-countw; i<(int)w.size(); i++){ 
+    int c = (int)w.size(); //error possible
+    for(int i=c-countw; i<c; i++){ 
         countw = 0;
 
         cout<<"above recursion"<<endl;    
@@ -304,6 +310,12 @@ int Board::findabovepage(int key){
 
     }
     countw = 0;
+
+    for(int i=0; i<(int)ubb.size(); i++){
+        if(ubb[i][4]==key){
+            return -1;
+        }
+    }  
 
     for(int i=0; i<(int)v.size();i++){
         if(v[i][4]==key){
@@ -333,6 +345,7 @@ int Board::findabovepage(int key){
 int Board::findunderpage(int key){
     cout<<"under is start"<<endl;
     countu = 0;
+
     
     for(int i=0; i<(int)v.size(); i++){
         if(v[i][4]==key){
@@ -341,6 +354,10 @@ int Board::findunderpage(int key){
             //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
         }
     }
+
+    ubb.push_back({v[m][0],v[m][1],v[m][2],v[m][3],v[m][4],v[m][5],m});
+
+    cout<<v[m][5]<<endl;
     
     for(int i=0; i<m; i++){
         if((v[m][0]<=v[i][0] && v[i][0]<v[m][0]+v[m][2]) || (v[m][0]<v[i][0]+v[i][2] && v[i][0]+v[i][2]<=v[m][0]+v[m][2]) || (v[m][0]>v[i][0] && v[m][0]+v[m][2]<v[i][0]+v[i][2])){
@@ -353,22 +370,23 @@ int Board::findunderpage(int key){
     }
     //cout<<"?"<<endl;
 
-    int p;
+    
+    for(int j=0; j<(int)u.size(); j++){
+        cout<<"In u ";
+        cout<<u[j][5]<<endl;
+    }
+    
+
     //cout<<"u.size() = "<<k<<endl;
     int usize=(int)u.size();
     for(int i=0; i<usize; i++){
-        //cout<<"in"<<endl
-        for(int k=0; k<(int)v.size(); k++){
-            if(v[k][6]==u[i][6]){
-                p = k;
-                break;
-                //setpage(v[i][0],v[i][1],v[i][2],v[i][3],v[i][4],v[i][5]);
-            }
-        }
-        for(int j=p; j<(int)v.size(); j++){
+        //cout<<"in"<<endl; 
+        for(int j=u[i][6]+1; j<(int)v.size(); j++){
+            //cout<<j<<endl;
+            //cout<<m<<endl;
             if(j!=m){
-                if((u[i][0]<=v[j][0] && v[j][0]<u[i][0]+u[i][2]) || (u[i][0]<v[j][0]+v[j][2] && v[j][0]+v[j][2]<=u[i][0]+u[i][2]) || (u[i][0]>v[j][0] && v[j][0]+v[j][2]<u[i][0]+u[i][2])){
-                    if((u[i][1]<=v[j][1] && v[j][1]<u[i][1]+u[i][3]) || (u[i][1]<v[j][1]+v[j][3] && v[j][1]+v[j][3]<=u[i][1]+u[i][3]) || (u[i][1]>v[j][1] && v[j][1]+v[j][3]<u[i][1]+u[i][3])){
+                if((u[i][0]<=v[j][0] && v[j][0]<u[i][0]+u[i][2]) || (u[i][0]<v[j][0]+v[j][2] && v[j][0]+v[j][2]<=u[i][0]+u[i][2]) || (u[i][0]>v[j][0] && u[i][0]+u[i][2]<v[j][0]+v[j][2])){
+                    if((u[i][1]<=v[j][1] && v[j][1]<u[i][1]+u[i][3]) || (u[i][1]<v[j][1]+v[j][3] && v[j][1]+v[j][3]<=u[i][1]+u[i][3]) || (u[i][1]>v[j][1] && u[i][1]+u[i][3]<v[j][1]+v[j][3])){
                         u.push_back({v[j][0],v[j][1],v[j][2],v[j][3],v[j][4],v[j][5],j}); 
                         countu++;
                         cout<<"all above ok 2"<<endl;
@@ -384,18 +402,32 @@ int Board::findunderpage(int key){
     //따라서 key의 above를 예외처리해야함.
     //의문:key above는 (모든 under의 above의 합집합)의 교집합인가? -> 아니다.
 
-    //countub = 0;
+    //countub=0;
     //같은 원소 빼주기
+
+    /*
+    for(int j=0; j<(int)u.size(); j++){
+        cout<<"In u ";
+        cout<<u[j][5]<<endl;
+    }
+    */
+
     for(int i=0; i<(int)u.size()-1; i++){
+        cout<<"next i"<<endl;
         for(int j=i+1; j<(int)u.size(); j++){
+            cout<<"next j"<<endl;
             if(u[i][6]==u[j][6]){
                 do{
+                cout <<u[j][5] << endl;
                 u.erase(u.begin()+j);
+                cout<<"same elements ok 3"<<endl;
                 //countub++
-                }while(u[i][6]==u[j][6]);
+                if(i+1==(int)u.size()){
+                    break;
+                }
+                }while(u[i][6]==u[j][6] && j<(int)u.size());
             }     
         }
-        cout<<"same elements ok 3"<<endl;
     }
 
     countub = 0;
@@ -416,7 +448,16 @@ int Board::findunderpage(int key){
             }
         }
         cout<<"find key above=all above and erase ok 5"<<endl;
-    }
+    } //error possible low
+
+    for(int i=0; i<(int)ubb.size(); i++){
+        for(int j=0; j<(int)u.size(); j++){
+            if(ubb[i][6]==u[j][6]){
+                u.erase(u.begin()+j);
+            }
+        }
+        cout<<"find key above=all above and erase ok 5.1"<<endl;
+    } //error possible low
 
     //sorting하기
     for(int i=0; i<(int)u.size(); i++){
@@ -450,11 +491,6 @@ int Board::findunderpage(int key){
 
     u.clear();
     ub.clear();
-
-
-
-
-
 
 
         /*
@@ -491,6 +527,7 @@ int Board::deleting(int id){
     
     findabovepage(id); 
     w.clear();
+    ubb.clear();
     //cout << "print above deleted id"<<endl;
     return id;        
     
