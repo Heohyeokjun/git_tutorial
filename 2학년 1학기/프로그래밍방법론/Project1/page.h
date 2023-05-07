@@ -4,9 +4,9 @@ class Page {
         Page(){x=0;y=0;width=0,height=0;id=0;content=0;}
         void setpage(int newx, int newy, int newwidth, int newheight, int newid, int newcontent)
         {x=newx; y=newy; width=newwidth; height=newheight; id=newid; content=newcontent;};
-        void store();
-        void takeid(int key);
-        void setid();
+        //void store();
+        //void takeid(int key);
+        //void setid();
         //void findabovepage(int key);
         int getx(){return x;}
         int gety(){return y;}
